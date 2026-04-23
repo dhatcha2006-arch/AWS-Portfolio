@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dhatchanamoorthi Anbazhagan</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #050b14;
+    --card: #0d1f3c;
+    --border: #1a3a5c;
+    --accent: #00c8ff;
+    --accent2: #7b5ea7;
+    --accent3: #00e5a0;
+    --text: #e8f4ff;
+    --muted: #6a8faf;
+    --heading-font: 'Syne', sans-serif;
+    --mono-font: 'Space Mono', monospace;
+    --body-font: 'DM Sans', sans-serif;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { background: var(--bg); color: var(--text); font-family: var(--body-font); font-weight: 300; line-height: 1.7; overflow-x: hidden; }
+  body::before {
+    content: ''; position: fixed; inset: 0;
+    background-image: linear-gradient(rgba(0,200,255,.03) 1px, transparent 1px), linear-gradient(90deg, rgba(0,200,255,.03) 1px, transparent 1px);
+    background-size: 40px 40px; pointer-events: none; z-index: 0;
+  }
+  .orb { position: fixed; border-radius: 50%; filter: blur(120px); pointer-events: none; z-index: 0; opacity: 0.25; }
+  .orb-1 { width: 500px; height: 500px; background: var(--accent); top: -150px; right: -100px; animation: drift 12s ease-in-out infinite alternate; }
+  .orb-2 { width: 400px; height: 400px; background: var(--accent2); bottom: 10%; left: -100px; animation: drift 15s ease-in-out infinite alternate-reverse; }
+  .orb-3 { width: 300px; height: 300px; background: var(--accent3); top: 50%; left: 40%; animation: drift 10s ease-in-out infinite alternate; }
+  @keyframes drift { from { transform: translate(0,0) scale(1); } to { transform: translate(30px,20px) scale(1.1); } }
+  .wrapper { position: relative; z-index: 1; max-width: 900px; margin: 0 auto; padding: 60px 32px 100px; }
+
+  /* HERO */
+  .hero { border-bottom: 1px solid var(--border); padding-bottom: 48px; margin-bottom: 64px; animation: fadeUp .8s ease both; }
+  h1.name { font-family: var(--heading-font); font-size: clamp(2.4rem, 6vw, 4rem); font-weight: 800; line-height: 1.05; letter-spacing: -.02em; color: #fff; margin-bottom: 20px; }
+  h1.name span { color: var(--accent); }
+  .summary { font-size: 1.05rem; color: #a8c8e8; max-width: 680px; line-height: 1.8; margin-bottom: 36px; }
+  .contact-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; }
+  .contact-item { display: flex; align-items: center; gap: 10px; font-family: var(--mono-font); font-size: .72rem; color: var(--muted); padding: 10px 14px; background: var(--card); border: 1px solid var(--border); border-radius: 6px; text-decoration: none; transition: border-color .2s, color .2s, background .2s; }
+  .contact-item:hover { border-color: var(--accent); color: var(--accent); background: rgba(0,200,255,.05); }
+
+  /* SECTIONS */
+  section { margin-bottom: 72px; animation: fadeUp .8s ease both; }
+  .section-label { display: flex; align-items: center; gap: 14px; margin-bottom: 32px; }
+  .section-label span { font-family: var(--mono-font); font-size: 10px; letter-spacing: .2em; text-transform: uppercase; color: var(--accent); }
+  .section-label::after { content: ''; flex: 1; height: 1px; background: linear-gradient(to right, var(--border), transparent); }
+
+  /* EDU */
+  .edu-grid { display: grid; gap: 16px; }
+  .edu-card { display: grid; grid-template-columns: 1fr auto; align-items: start; gap: 12px; padding: 24px 28px; background: var(--card); border: 1px solid var(--border); border-radius: 8px; transition: border-color .2s, transform .2s; position: relative; overflow: hidden; }
+  .edu-card::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 3px; background: var(--accent); border-radius: 3px 0 0 3px; }
+  .edu-card:hover { border-color: rgba(0,200,255,.4); transform: translateX(4px); }
+  .edu-degree { font-family: var(--heading-font); font-size: 1rem; font-weight: 700; color: #fff; margin-bottom: 4px; }
+  .edu-school { font-size: .9rem; color: var(--muted); margin-bottom: 6px; }
+  .edu-score { display: inline-block; font-family: var(--mono-font); font-size: .72rem; color: var(--accent3); background: rgba(0,229,160,.08); border: 1px solid rgba(0,229,160,.2); padding: 2px 10px; border-radius: 2px; }
+  .edu-year { font-family: var(--mono-font); font-size: .72rem; color: var(--accent); white-space: nowrap; padding-top: 4px; }
+
+  /* PROJECTS */
+  .project-card { padding: 28px 32px; background: var(--card); border: 1px solid var(--border); border-radius: 8px; margin-bottom: 16px; transition: border-color .25s, transform .25s; position: relative; overflow: hidden; }
+  .project-card::after { content: ''; position: absolute; inset: 0; background: radial-gradient(circle at 0% 0%, rgba(0,200,255,.05), transparent 60%); pointer-events: none; opacity: 0; transition: opacity .3s; }
+  .project-card:hover::after { opacity: 1; }
+  .project-card:hover { border-color: rgba(0,200,255,.4); transform: translateY(-3px); }
+  .project-num { font-family: var(--mono-font); font-size: .7rem; color: var(--accent); letter-spacing: .1em; margin-bottom: 8px; }
+  .project-title { font-family: var(--heading-font); font-size: 1.15rem; font-weight: 700; color: #fff; margin-bottom: 14px; }
+  .project-desc { font-size: .9rem; color: #a8c8e8; line-height: 1.75; margin-bottom: 14px; }
+  .tech-stack { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+  .tech-tag { font-family: var(--mono-font); font-size: .68rem; padding: 3px 10px; border-radius: 2px; background: rgba(123,94,167,.15); border: 1px solid rgba(123,94,167,.35); color: #c8aaff; letter-spacing: .05em; }
+
+  /* WORKFLOW IMAGE */
+  .workflow-label {
+    display: flex; align-items: center; gap: 8px;
+    font-family: var(--mono-font); font-size: .7rem; color: var(--accent);
+    letter-spacing: .1em; margin: 20px 0 10px;
+  }
+  .workflow-label::before {
+    content: '⬡';
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 22px; height: 22px;
+    background: rgba(0,200,255,.15); border: 1px solid rgba(0,200,255,.3);
+    border-radius: 4px; font-size: 11px;
+  }
+  .workflow-wrapper {
+    border-radius: 10px; overflow: hidden;
+    border: 1px solid rgba(0,200,255,.25);
+    cursor: zoom-in;
+    position: relative;
+    background: #fff;
+    transition: border-color .2s, box-shadow .2s;
+    margin-bottom: 8px;
+  }
+  .workflow-wrapper:hover {
+    border-color: rgba(0,200,255,.6);
+    box-shadow: 0 0 30px rgba(0,200,255,.15);
+  }
+  .workflow-wrapper img {
+    width: 100%; display: block;
+    transition: transform .3s;
+  }
+  .workflow-wrapper:hover img { transform: scale(1.01); }
+  .workflow-zoom-hint {
+    position: absolute; bottom: 10px; right: 12px;
+    font-family: var(--mono-font); font-size: .62rem;
+    color: rgba(255,255,255,.7); background: rgba(0,0,0,.5);
+    padding: 3px 10px; border-radius: 20px;
+    backdrop-filter: blur(4px);
+    pointer-events: none;
+    opacity: 0; transition: opacity .2s;
+  }
+  .workflow-wrapper:hover .workflow-zoom-hint { opacity: 1; }
+
+  /* CERTIFICATES */
+  .cert-list { display: grid; gap: 10px; }
+  .cert-item { display: flex; align-items: center; gap: 16px; padding: 16px 20px; background: var(--card); border: 1px solid var(--border); border-radius: 6px; cursor: pointer; transition: border-color .2s, background .2s, transform .2s; user-select: none; }
+  .cert-item:hover { border-color: rgba(0,229,160,.5); background: rgba(0,229,160,.04); transform: translateX(4px); }
+  .cert-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent3); flex-shrink: 0; box-shadow: 0 0 8px var(--accent3); }
+  .cert-name { font-size: .9rem; color: var(--text); flex: 1; }
+  .cert-issuer { font-family: var(--mono-font); font-size: .68rem; color: var(--muted); }
+  .cert-view-btn { display: flex; align-items: center; gap: 6px; font-family: var(--mono-font); font-size: .65rem; color: var(--accent3); background: rgba(0,229,160,.08); border: 1px solid rgba(0,229,160,.25); border-radius: 3px; padding: 4px 10px; white-space: nowrap; transition: background .2s, border-color .2s; }
+  .cert-item:hover .cert-view-btn { background: rgba(0,229,160,.18); border-color: rgba(0,229,160,.5); }
+
+  /* MODAL */
+  .modal-overlay { position: fixed; inset: 0; z-index: 1000; background: rgba(5,11,20,.94); backdrop-filter: blur(10px); display: flex; align-items: center; justify-content: center; padding: 24px; opacity: 0; pointer-events: none; transition: opacity .3s; }
+  .modal-overlay.active { opacity: 1; pointer-events: all; }
+  .modal-box { position: relative; max-width: 960px; width: 100%; max-height: 92vh; background: var(--card); border: 1px solid rgba(0,229,160,.3); border-radius: 12px; overflow: hidden; display: flex; flex-direction: column; transform: scale(.95); transition: transform .3s; box-shadow: 0 0 80px rgba(0,229,160,.1); }
+  .modal-overlay.active .modal-box { transform: scale(1); }
+  .modal-header { display: flex; align-items: center; justify-content: space-between; padding: 16px 24px; border-bottom: 1px solid var(--border); flex-shrink: 0; }
+  .modal-title { font-family: var(--heading-font); font-size: .95rem; font-weight: 700; color: #fff; }
+  .modal-close { width: 32px; height: 32px; background: rgba(255,255,255,.06); border: 1px solid var(--border); border-radius: 6px; color: var(--muted); font-size: 16px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background .2s, color .2s; flex-shrink: 0; }
+  .modal-close:hover { background: rgba(255,80,80,.15); color: #ff6b6b; border-color: rgba(255,80,80,.3); }
+  .modal-body { flex: 1; overflow: auto; padding: 20px; display: flex; align-items: center; justify-content: center; }
+  .modal-body img { max-width: 100%; max-height: 78vh; border-radius: 6px; object-fit: contain; }
+  .modal-body iframe { width: 100%; height: 75vh; border: none; border-radius: 6px; background: #fff; }
+
+  /* SKILLS */
+  .skills-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px; }
+  .skill-group { padding: 24px; background: var(--card); border: 1px solid var(--border); border-radius: 8px; transition: border-color .2s, transform .2s; }
+  .skill-group:hover { border-color: rgba(0,200,255,.3); transform: translateY(-2px); }
+  .skill-group-title { font-family: var(--heading-font); font-size: .85rem; font-weight: 700; color: var(--accent); text-transform: uppercase; letter-spacing: .1em; margin-bottom: 16px; padding-bottom: 10px; border-bottom: 1px solid var(--border); }
+  .skill-pill-wrap { display: flex; flex-wrap: wrap; gap: 8px; }
+  .skill-pill { font-size: .8rem; padding: 5px 12px; border-radius: 4px; background: rgba(0,200,255,.06); border: 1px solid rgba(0,200,255,.15); color: #a8d8f0; transition: background .2s, border-color .2s; }
+  .skill-pill:hover { background: rgba(0,200,255,.15); border-color: rgba(0,200,255,.4); color: #fff; }
+
+  footer { text-align: center; padding-top: 40px; border-top: 1px solid var(--border); font-family: var(--mono-font); font-size: .72rem; color: var(--muted); letter-spacing: .08em; }
+  footer a { color: var(--accent); text-decoration: none; }
+
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
+  section:nth-child(2) { animation-delay: .1s; }
+  section:nth-child(3) { animation-delay: .2s; }
+  section:nth-child(4) { animation-delay: .3s; }
+  section:nth-child(5) { animation-delay: .4s; }
+
+  @media (max-width: 640px) {
+    .wrapper { padding: 40px 20px 80px; }
+    h1.name { font-size: 2rem; }
+    .edu-card { grid-template-columns: 1fr; }
+    .cert-item { flex-wrap: wrap; }
+  }
+</style>
+</head>
+<body>
+
+<div class="orb orb-1"></div>
+<div class="orb orb-2"></div>
+<div class="orb orb-3"></div>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="certModal" onclick="closeModal(event)">
+  <div class="modal-box">
+    <div class="modal-header">
+      <div class="modal-title" id="modalTitle"></div>
+      <button class="modal-close" onclick="closeModalBtn()">✕</button>
+    </div>
+    <div class="modal-body" id="modalBody"></div>
+  </div>
+</div>
+
+<div class="wrapper">
+
+  <!-- HERO -->
+  <header class="hero">
+    <h1 class="name">Dhatchanamoorthi<br><span>Anbazhagan</span></h1>
+    <p class="summary">
+      Aspiring Cloud Security Engineer with a strong foundation in Java, C, and Python, and hands-on
+      experience across 15+ AWS services including EC2, S3, EFS, IAM, VPC, and RDS. Currently applying cloud
+      and security concepts during an internship at Alpha Pixel Media, with a growing focus on cloud security,
+      compliance, and automation. A proactive problem-solver passionate about building secure, scalable, and
+      reliable cloud solutions.
+    </p>
+    <div class="contact-grid">
+      <a href="tel:+919361639196" class="contact-item"><span>📞</span>+91-9361639196</a>
+      <a href="mailto:Dhathca2006@gmail.com" class="contact-item"><span>✉</span>Dhathca2006@gmail.com</a>
+      <a href="https://www.linkedin.com/in/dhatchanamoorthi-anbazhagan/" target="_blank" class="contact-item"><span>🔗</span>LinkedIn Profile</a>
+      <a href="https://github.com/dhatcha2006-arch" target="_blank" class="contact-item"><span>⌥</span>github / dhatcha2006-arch</a>
+      <div class="contact-item"><span>📍</span>Dharmapuri, Tamil Nadu</div>
+    </div>
+  </header>
+
+  <!-- EDUCATION -->
+  <section>
+    <div class="section-label"><span>01 — Education</span></div>
+    <div class="edu-grid">
+      <div class="edu-card">
+        <div>
+          <div class="edu-degree">Bachelor of Engineering — Information Technology</div>
+          <div class="edu-school">Sri Shanmugha College of Engineering and Technology</div>
+          <span class="edu-score">CGPA: 7.77 / 10</span>
+        </div>
+        <div class="edu-year">2023 – 2027</div>
+      </div>
+      <div class="edu-card">
+        <div>
+          <div class="edu-degree">Higher Secondary School (Class XII)</div>
+          <div class="edu-school">RV Higher Secondary School</div>
+          <span class="edu-score">71 / 100%</span>
+        </div>
+        <div class="edu-year">2022 – 2023</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROJECTS -->
+  <section>
+    <div class="section-label"><span>02 — Projects</span></div>
+
+    <div class="project-card">
+      <div class="project-num">PROJECT / 01</div>
+      <div class="project-title">Hands-on Cloud Computing Lab using VirtualBox</div>
+      <p class="project-desc">
+        Designed and implemented a virtual cloud environment using VirtualBox by deploying a Linux server,
+        Apache web server, and MySQL database with secure network communication.<br><br>
+        Configured firewall rules and user access control to enhance system security, gaining hands-on
+        experience in virtualization, cloud infrastructure, and basic security practices.
+      </p>
+      <div class="tech-stack">
+        <span class="tech-tag">VirtualBox</span>
+        <span class="tech-tag">Linux</span>
+        <span class="tech-tag">Apache</span>
+        <span class="tech-tag">MySQL</span>
+        <span class="tech-tag">Networking</span>
+        <span class="tech-tag">Firewall</span>
+      </div>
+    </div>
+
+    <div class="project-card">
+      <div class="project-num">PROJECT / 02</div>
+      <div class="project-title">Secure Scalable AWS Cloud Architecture with Threat Detection</div>
+      <p class="project-desc">
+        Built a scalable AWS architecture using VPC, EC2, RDS, and S3 with Load Balancer and Auto Scaling.<br><br>
+        Implemented IAM, WAF, Shield, and KMS for security, with GuardDuty for threat detection and
+        CloudWatch/CloudTrail for monitoring and auditing.<br><br>
+        Configured secure networking and applied encryption and access control for data protection.
+      </p>
+
+      <!-- WORKFLOW DIAGRAM -->
+      <div class="workflow-label">PROJECT ARCHITECTURE WORKFLOW</div>
+      <div class="workflow-wrapper" onclick="openModal('AWS Cloud Architecture Practice Workflow', 'img', 'aws_workflow.png')">
+        <img src="aws_workflow.png" alt="AWS Cloud Architecture Workflow" />
+        <div class="workflow-zoom-hint">🔍 Click to expand</div>
+      </div>
+
+      <div class="tech-stack">
+        <span class="tech-tag">EC2</span>
+        <span class="tech-tag">S3</span>
+        <span class="tech-tag">RDS</span>
+        <span class="tech-tag">VPC</span>
+        <span class="tech-tag">IAM</span>
+        <span class="tech-tag">WAF</span>
+        <span class="tech-tag">Shield</span>
+        <span class="tech-tag">KMS</span>
+        <span class="tech-tag">GuardDuty</span>
+        <span class="tech-tag">Auto Scaling</span>
+        <span class="tech-tag">Load Balancer</span>
+        <span class="tech-tag">CloudWatch</span>
+        <span class="tech-tag">CloudTrail</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- CERTIFICATES -->
+  <section>
+    <div class="section-label"><span>03 — Certifications</span></div>
+    <div class="cert-list">
+
+      <div class="cert-item" onclick="openModal('Web Development Internship — Corizo', 'img', '1000063668.png')">
+        <div class="cert-dot"></div>
+        <div class="cert-name">Web Development Internship</div>
+        <div class="cert-issuer">Corizo — Jul – Aug 2024</div>
+        <div class="cert-view-btn">👁 View</div>
+      </div>
+
+      <div class="cert-item" onclick="openModal('Introduction to HTML, CSS &amp; JavaScript — IBM / Coursera', 'pdf', 'Dhatchanamoorthi-IBM_coursera.pdf')">
+        <div class="cert-dot"></div>
+        <div class="cert-name">Web Development Certification (HTML, CSS &amp; JS)</div>
+        <div class="cert-issuer">IBM / Coursera — Oct 2024</div>
+        <div class="cert-view-btn">👁 View</div>
+      </div>
+
+      <div class="cert-item" onclick="openModal('AWS Cloud Practitioner Essentials — Amazon Web Services', 'img', 'Dhatchanamoorthi-AWS.jpeg')">
+        <div class="cert-dot"></div>
+        <div class="cert-name">AWS Cloud Practitioner Essentials</div>
+        <div class="cert-issuer">Amazon Web Services — Apr 2026</div>
+        <div class="cert-view-btn">👁 View</div>
+      </div>
+
+      <div class="cert-item" onclick="openModal('Introduction to Cyber Security — Simplilearn', 'pdf', 'Dhatchanamoorthi-Cybersecurity.pdf')">
+        <div class="cert-dot"></div>
+        <div class="cert-name">Introduction to Cybersecurity</div>
+        <div class="cert-issuer">Simplilearn — Apr 2026</div>
+        <div class="cert-view-btn">👁 View</div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- SKILLS -->
+  <section>
+    <div class="section-label"><span>04 — Technical Skills</span></div>
+    <div class="skills-grid">
+      <div class="skill-group">
+        <div class="skill-group-title">Programming</div>
+        <div class="skill-pill-wrap">
+          <span class="skill-pill">C</span>
+          <span class="skill-pill">Java (Basic)</span>
+          <span class="skill-pill">Python (Basic)</span>
+        </div>
+      </div>
+      <div class="skill-group">
+        <div class="skill-group-title">Cloud — AWS</div>
+        <div class="skill-pill-wrap">
+          <span class="skill-pill">EC2</span>
+          <span class="skill-pill">S3</span>
+          <span class="skill-pill">EFS</span>
+          <span class="skill-pill">IAM</span>
+          <span class="skill-pill">VPC</span>
+          <span class="skill-pill">RDS</span>
+          <span class="skill-pill">CloudWatch</span>
+          <span class="skill-pill">GuardDuty</span>
+          <span class="skill-pill">WAF</span>
+          <span class="skill-pill">KMS</span>
+        </div>
+      </div>
+      <div class="skill-group">
+        <div class="skill-group-title">Security</div>
+        <div class="skill-pill-wrap">
+          <span class="skill-pill">Cloud Security</span>
+          <span class="skill-pill">IAM Policies</span>
+          <span class="skill-pill">Encryption</span>
+          <span class="skill-pill">Threat Detection</span>
+          <span class="skill-pill">Firewall Rules</span>
+          <span class="skill-pill">Compliance</span>
+        </div>
+      </div>
+      <div class="skill-group">
+        <div class="skill-group-title">Infrastructure</div>
+        <div class="skill-pill-wrap">
+          <span class="skill-pill">Virtualization</span>
+          <span class="skill-pill">VirtualBox</span>
+          <span class="skill-pill">Linux</span>
+          <span class="skill-pill">Apache</span>
+          <span class="skill-pill">MySQL</span>
+          <span class="skill-pill">Auto Scaling</span>
+          <span class="skill-pill">Load Balancer</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <p>© 2026 Dhatchanamoorthi Anbazhagan &nbsp;·&nbsp;
+      <a href="mailto:Dhathca2006@gmail.com">Dhathca2006@gmail.com</a>
+    </p>
+  </footer>
+
+</div>
+
+<script>
+  function openModal(title, type, file) {
+    document.getElementById('modalTitle').textContent = title;
+    const body = document.getElementById('modalBody');
+    body.innerHTML = type === 'img'
+      ? `<img src="${file}" alt="${title}" />`
+      : `<iframe src="${file}" title="${title}"></iframe>`;
+    document.getElementById('certModal').classList.add('active');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeModal(e) {
+    if (e.target === document.getElementById('certModal')) closeModalBtn();
+  }
+  function closeModalBtn() {
+    document.getElementById('certModal').classList.remove('active');
+    document.getElementById('modalBody').innerHTML = '';
+    document.body.style.overflow = '';
+  }
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModalBtn(); });
+</script>
+</body>
+</html>
